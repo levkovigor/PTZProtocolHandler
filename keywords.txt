@@ -1,0 +1,17 @@
+#######################################
+# Syntax Coloring Map For PTZProtocolHandler
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PTZProtocolHandler	KEYWORD1
+PTZCommand			KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin			KEYWORD2
+parseCommand	KEYWORD2
