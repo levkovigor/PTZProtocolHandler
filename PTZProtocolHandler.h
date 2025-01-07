@@ -8,9 +8,9 @@ struct PTZCommand {
     uint8_t command;   // Command byte
     uint8_t data1;     // Data byte 1
     uint8_t data2;     // Data byte 2
-    uint8_t action;    // Action (press/release)
+    uint8_t action;    // Action (press/release or movement)
     bool valid;        // Whether the packet is valid
-    String protocol;   // Protocol type ("Dahua" or "Pelco-D")
+    String protocol;   // Protocol type ("Dahua", "Pelco-D", "Pelco-P", "Hikvision", "Hanbang")
     uint8_t packet[8]; // Source packet data
 };
 
@@ -30,6 +30,12 @@ private:
     void fillDahuaCommand(PTZCommand& command);
     bool isValidPelcoDCommand();
     void fillPelcoDCommand(PTZCommand& command);
+    bool isValidPelcoPCommand();
+    void fillPelcoPCommand(PTZCommand& command);
+    bool isValidHikvisionCommand();
+    void fillHikvisionCommand(PTZCommand& command);
+    bool isValidHanbangCommand();
+    void fillHanbangCommand(PTZCommand& command);
 };
 
 #endif
