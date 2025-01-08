@@ -85,10 +85,10 @@ bool PTZProtocolHandler::isValidPelcoDCommand() {
 
 void PTZProtocolHandler::fillPelcoDCommand(PTZCommand& command) {
     command.addr = buffer[1];
-    command.command = buffer[3];
-    command.action = 0; // Pelco-D doesn't differentiate actions
-    command.data1 = buffer[4];
-    command.data2 = buffer[5];
+    command.command = buffer[2];	//Command 1
+    command.action = buffer[3]; 	//Command 2
+    command.data1 = buffer[4];		//Data 1
+    command.data2 = buffer[5];		//Data 2
     command.valid = true;
     command.protocol = "Pelco-D";
     memcpy(command.packet, buffer, sizeof(buffer));
@@ -100,16 +100,16 @@ bool PTZProtocolHandler::isValidPelcoPCommand() {
     if (bufferIndex < 8) return false;
     if (buffer[0] != 0xA0 && buffer[6] != 0xAF) return false; // Check header
     uint8_t checksum = 0;
-    for (int i = 1; i < 7; i++) checksum ^= buffer[i];
+    for (int i = 0; i < 7; i++) checksum ^= buffer[i];
     return (checksum & 0xFF) == buffer[7];
 }
 
 void PTZProtocolHandler::fillPelcoPCommand(PTZCommand& command) {
     command.addr = buffer[1];
-    command.command = buffer[2];
-    command.action = 0; // Pelco-P doesn't differentiate actions
-    command.data1 = buffer[5];
-    command.data2 = buffer[6];
+    command.command = buffer[2]; 	//Data 1
+    command.action = buffer[3]; 	//Data 2
+    command.data1 = buffer[4]; 		//Data 3
+    command.data2 = buffer[5];		//Data 4
     command.valid = true;
     command.protocol = "Pelco-P";
     memcpy(command.packet, buffer, sizeof(buffer));
@@ -127,11 +127,11 @@ bool PTZProtocolHandler::isValidHikvisionCommand() {
 }
 
 void PTZProtocolHandler::fillHikvisionCommand(PTZCommand& command) {
-    command.addr = buffer[1];
-    command.command = buffer[2];
-    command.action = buffer[4]; // Action depends on specific byte
-    command.data1 = buffer[3];
-    command.data2 = 0; // Not used in this example
+    command.addr = buffer[1];		//?
+    command.command = buffer[2];	//?
+    command.action = buffer[4]; 	//?
+    command.data1 = buffer[3];		//?
+    command.data2 = 0; 			// Not used
     command.valid = true;
     command.protocol = "Hikvision";
     memcpy(command.packet, buffer, sizeof(buffer));
@@ -144,16 +144,16 @@ bool PTZProtocolHandler::isValidHanbangCommand() {
     if (buffer[0] != 0xF6) return false; // Check header
     uint8_t checksum = buffer[6]; // Extracted checksum
     uint8_t calculated = 0;
-    for (int i = 0; i < 6; i++) calculated += buffer[i];
-    return (calculated & 0xFF) == checksum;
+    for (int i = 1; i < 6; i++) calculated += buffer[i];
+    return (calculated & 0x7F) == checksum;
 }
 
 void PTZProtocolHandler::fillHanbangCommand(PTZCommand& command) {
-    command.addr = buffer[1];
-    command.command = buffer[2];
-    command.action = 0; // Hanbang doesn't differentiate actions
-    command.data1 = buffer[4];
-    command.data2 = buffer[5];
+    command.addr = buffer[2];
+    command.command = buffer[1]; //?
+    command.action = buffer[3];	 //?
+    command.data1 = buffer[4];   //?
+    command.data2 = buffer[5];	 //?
     command.valid = true;
     command.protocol = "Hanbang";
     memcpy(command.packet, buffer, sizeof(buffer));
