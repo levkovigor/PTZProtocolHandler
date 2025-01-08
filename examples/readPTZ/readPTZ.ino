@@ -12,8 +12,10 @@ void loop() {
     PTZCommand command;
     if (ptz.parseCommand(command)) {
         if (command.valid) {
+            Serial.print("Packet size: ");
+            Serial.println(sizeof(command.packet));
             Serial.print("Packet: ");
-            for (int i = 0; i < 8; i++) {Serial.print(command.packet[i], HEX);  Serial.print(" ");}
+            for (int i = 0; i < sizeof(command.packet); i++) {Serial.print(command.packet[i], HEX);  Serial.print(" ");}
             Serial.println();
             Serial.print("Protocol: ");
             Serial.println(command.protocol);
