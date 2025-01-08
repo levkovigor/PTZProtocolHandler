@@ -24,6 +24,7 @@ private:
     Stream* _ser;
     uint8_t buffer[8];
     size_t bufferIndex;
+	unsigned long _timer = 0;
 
     void shiftBuffer();
     bool isValidDahuaCommand();
