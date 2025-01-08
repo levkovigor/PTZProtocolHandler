@@ -98,7 +98,7 @@ void PTZProtocolHandler::fillPelcoDCommand(PTZCommand& command) {
 // Pelco-P Protocol
 bool PTZProtocolHandler::isValidPelcoPCommand() {
     if (bufferIndex < 8) return false;
-    if (buffer[0] != 0xA0) return false; // Check header
+    if (buffer[0] != 0xA0 && buffer[6] != 0xAF) return false; // Check header
     uint8_t checksum = 0;
     for (int i = 1; i < 7; i++) checksum ^= buffer[i];
     return (checksum & 0xFF) == buffer[7];
